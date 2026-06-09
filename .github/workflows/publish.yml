@@ -1,5 +1,6 @@
-# Publishes the BelgianEid NuGet package using Trusted Publishing (keyless OIDC).
-# No API key is stored — nuget.org issues a short-lived key to this workflow.
+# Publishes the BelgianEid NuGet package to nuget.org (keyless, via Trusted
+# Publishing / OIDC) and to GitHub Packages (via the built-in GITHUB_TOKEN).
+# No API key or manual secret is stored anywhere.
 #
 # One-time setup on nuget.org (Account → Trusted Publishing → Add policy):
 #   Repository Owner : isnow-git
@@ -22,14 +23,15 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write   # required: GitHub OIDC token for Trusted Publishing
+      id-token: write   # required: GitHub OIDC token for Trusted Publishing (nuget.org)
       contents: read
+      packages: write   # required: publish to GitHub Packages (repo "Packages" section)
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup .NET 8
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 8.0.x
 
@@ -59,9 +61,18 @@ jobs:
         with:
           user: isnow
 
-      - name: Push
+      - name: Push to nuget.org
         run: >
           dotnet nuget push "artifacts/*.nupkg"
           --api-key ${{ steps.login.outputs.NUGET_API_KEY }}
           --source https://api.nuget.org/v3/index.json
+          --skip-duplicate
+
+      # Also publish to GitHub Packages so the package appears in the repo's
+      # "Packages" section. GITHUB_TOKEN is built in — no manual secret needed.
+      - name: Push to GitHub Packages
+        run: >
+          dotnet nuget push "artifacts/*.nupkg"
+          --api-key ${{ secrets.GITHUB_TOKEN }}
+          --source https://nuget.pkg.github.com/isnow-git/index.json
           --skip-duplicate
