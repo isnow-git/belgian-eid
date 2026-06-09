@@ -1,0 +1,7 @@
+{
+  "name": "be.belgianeid.bridge",
+  "description": "Belgian eID Bridge — read Belgian eID cards via PC/SC",
+  "path": "{{BRIDGE_PATH}}",
+  "type": "stdio",
+  "allowed_origins": ["chrome-extension://{{EXTENSION_ID}}/"]
+}

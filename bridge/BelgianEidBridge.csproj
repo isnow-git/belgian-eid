@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>BelgianEid.Bridge</RootNamespace>
+    <AssemblyName>BelgianEidBridge</AssemblyName>
+
+    <Product>Belgian eID Bridge</Product>
+    <Description>Chrome Native Messaging host for reading Belgian eID cards via PC/SC</Description>
+
+    <!--
+      Suppress the console window on Windows so no terminal flickers when Chrome
+      launches the process in the background.
+    -->
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\library\BelgianEid.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Required to use ServiceCollection / BuildServiceProvider() in Program.cs -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,21 @@
+<Project>
+
+  <!--
+    Shared metadata applied to every project in the repository.
+    Per-project files only override what is genuinely specific to them
+    (PackageId, Description, AssemblyName, OutputType, ...).
+  -->
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <Authors>Simon Villers</Authors>
+    <Company>Simon Villers</Company>
+    <Product>BelgianEid</Product>
+    <Copyright>Copyright © Simon Villers</Copyright>
+
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/isnow-git/belgian-eid</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/isnow-git/belgian-eid</PackageProjectUrl>
+  </PropertyGroup>
+
+</Project>

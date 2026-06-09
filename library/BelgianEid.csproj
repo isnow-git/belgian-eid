@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>12.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>BelgianEid</AssemblyName>
+    <RootNamespace>BelgianEid</RootNamespace>
+
+    <!-- XML documentation for IntelliSense consumers -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- CS1591: we document the public API, no noise about internal members -->
+    <!-- CS0618: the BouncyCastle OCSP API is marked obsolete but remains functional with no direct replacement -->
+    <NoWarn>$(NoWarn);CS1591;CS0618</NoWarn>
+
+    <!-- NuGet metadata (shared identity comes from Directory.Build.props) -->
+    <PackageId>BelgianEid</PackageId>
+    <Description>.NET library for interacting with the Belgian electronic identity card (eID): data reading, X.509 certificates, PIN verification, electronic signature, challenge authentication and OCSP validation.</Description>
+    <PackageTags>eid;belgium;smartcard;pkcs11;identity</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Low-level card access via PKCS#11 (beidpkcs11.dll) -->
+    <PackageReference Include="Pkcs11Interop" Version="5.2.0" />
+    <!-- Building / parsing OCSP requests -->
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.5.1" />
+    <!-- Dependency injection and Options pattern -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+  </ItemGroup>
+
+  <!--
+    Optional bundling of the native eID middleware DLL.
+    Place beidpkcs11.dll in native/win-x64/ (and the equivalent .so / .dylib for Linux/macOS).
+    /!\ beidpkcs11.dll is distributed under the LGPLv3 license: see the project README.
+  -->
+  <ItemGroup Condition="Exists('native')">
+    <None Include="native\**\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

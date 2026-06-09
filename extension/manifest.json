@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "Belgian eID",
+  "description": "Secure bridge between a web application and the local Belgian eID card reader.",
+  "version": "1.0.0",
+  "permissions": [
+    "storage",
+    "nativeMessaging"
+  ],
+  "host_permissions": [
+    "http://localhost:3000/*",
+    "https://your-app.example/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://localhost:3000/*",
+        "https://your-app.example/*"
+      ],
+      "js": [
+        "inject/inject.js"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "http://localhost:3000/*",
+        "https://your-app.example/*"
+      ],
+      "js": [
+        "content/content.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "background": {
+    "service_worker": "background/index.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Belgian eID"
+  }
+}
