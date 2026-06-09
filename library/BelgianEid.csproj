@@ -22,7 +22,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="README.md" Pack="true" PackagePath="\" />
+    <!-- README.nuget.md is written for package consumers (absolute links, no repo
+         folder assumptions); it is packed as the NuGet page README. The repo
+         module doc lives in README.md. -->
+    <None Include="README.nuget.md" Pack="true" PackagePath="README.md" />
   </ItemGroup>
 
   <ItemGroup>

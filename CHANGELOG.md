@@ -4,6 +4,15 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project
 follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] — 2026-06-09
+
+### Changed
+
+- The NuGet package now ships a consumer-focused README (install, native
+  middleware setup, configuration, error handling) instead of the repository
+  module doc, whose relative links and folder references did not apply to
+  package consumers. The package is also published to GitHub Packages.
+
 ## [1.0.0] — 2026-06-09
 
 First public release.
@@ -24,4 +33,5 @@ First public release.
 - **samples** — console walkthrough (read · PIN · sign · OCSP).
 - **tests** — 17 OCSP unit tests that need no card, reader, or network.
 
+[1.0.1]: https://github.com/isnow-git/belgian-eid/releases/tag/v1.0.1
 [1.0.0]: https://github.com/isnow-git/belgian-eid/releases/tag/v1.0.0
