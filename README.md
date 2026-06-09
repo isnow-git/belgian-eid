@@ -178,7 +178,7 @@ belgian-eid/
 ├── LICENSE                            MIT
 ├── THIRD-PARTY-NOTICES.md             Bundled dependencies and the LGPLv3 obligation
 ├── CHANGELOG.md
-├── .github/workflows/ci.yml           Build + test on every push / PR
+├── .github/workflows/                CI (build + test) · NuGet publish (Trusted Publishing)
 │
 ├── library/                           .NET 8 class library — core smart-card operations
 │   ├── abstractions/                  Public interfaces  (IEidClient, IEidSession, …)
