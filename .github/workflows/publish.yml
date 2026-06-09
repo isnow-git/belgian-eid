@@ -1,0 +1,66 @@
+# Publishes the BelgianEid NuGet package using Trusted Publishing (keyless OIDC).
+# No API key is stored — nuget.org issues a short-lived key to this workflow.
+#
+# One-time setup on nuget.org (Account → Trusted Publishing → Add policy):
+#   Repository Owner : isnow-git
+#   Repository       : belgian-eid
+#   Workflow File    : publish.yml
+#   Environment      : (leave empty)
+# Then add a repo secret NUGET_USER = your nuget.org username (profile name, not email).
+#
+# Trigger: publish a GitHub Release (e.g. tag v1.0.0). The release tag drives the
+# package version (v1.2.3 → 1.2.3).
+name: Publish to NuGet
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # required: GitHub OIDC token for Trusted Publishing
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Resolve version from release tag
+        id: ver
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            tag="${{ github.event.release.tag_name }}"
+            echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
+          else
+            echo "version=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Pack
+        shell: bash
+        run: |
+          args=(-c Release -o "$GITHUB_WORKSPACE/artifacts")
+          if [ -n "${{ steps.ver.outputs.version }}" ]; then
+            args+=("-p:Version=${{ steps.ver.outputs.version }}")
+          fi
+          dotnet pack library/BelgianEid.csproj "${args[@]}"
+
+      - name: NuGet login (OIDC → short-lived API key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: Push
+        run: >
+          dotnet nuget push "artifacts/*.nupkg"
+          --api-key ${{ steps.login.outputs.NUGET_API_KEY }}
+          --source https://api.nuget.org/v3/index.json
+          --skip-duplicate
