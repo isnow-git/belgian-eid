@@ -16,8 +16,7 @@ independently: a standalone **.NET library** (`BelgianEid` on NuGet), a Chrome
 developer mode.
 
 > **Just need the .NET library?** Run `dotnet add package BelgianEid` and read
-> [library/README.md](library/README.md). The browser stack (bridge + extension
-> + installer) is optional and only needed to reach the card from a web page.
+> [library/README.md](library/README.md). The browser stack (bridge + extension + installer) is optional and only needed to reach the card from a web page.
 
 ---
 
