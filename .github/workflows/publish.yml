@@ -6,7 +6,8 @@
 #   Repository       : belgian-eid
 #   Workflow File    : publish.yml
 #   Environment      : (leave empty)
-# Then add a repo secret NUGET_USER = your nuget.org username (profile name, not email).
+# No API key and no GitHub secret are required — the nuget.org username below is
+# public, and nuget.org issues a short-lived key at run time via GitHub OIDC.
 #
 # Trigger: publish a GitHub Release (e.g. tag v1.0.0). The release tag drives the
 # package version (v1.2.3 → 1.2.3).
@@ -56,7 +57,7 @@ jobs:
         uses: NuGet/login@v1
         id: login
         with:
-          user: ${{ secrets.NUGET_USER }}
+          user: isnow
 
       - name: Push
         run: >
